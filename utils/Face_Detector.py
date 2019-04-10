@@ -9,7 +9,7 @@ class Face_Detector:
     def detect(self, frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = self.face_cascade.detectMultiScale(gray, 1.3, 5)
-        rois = []
+        face_coordinates = []
         for (x, y, w, h) in faces:
-            rois.append(frame[y : y + h, x : x + w])
-        return rois
+            face_coordinates.append((x, y, w, h))
+        return face_coordinates

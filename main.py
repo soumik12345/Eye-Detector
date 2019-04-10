@@ -16,21 +16,28 @@ video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 while True:
     _, frame = video_capture.read()
-    roi = face_detector.detect(frame)
-    cv2.imshow('Frame', frame)
+    
+    rois = face_detector.detect(frame)
     
     try:
-        preprocessed_roi = preprocessor.process(roi[0])
+        x, y, w, h = rois[0]
+        roi = frame[y : y + h, x : x + w]
+        preprocessed_roi = preprocessor.process(roi)
+        
         eye_x, eye_y = model_loader.get_coordinates(
             preprocessed_roi,
             preprocessed_roi.shape[0],
             preprocessed_roi.shape[1]
         )
-        print(eye_x, eye_y)
+        print(eye_x + x, eye_y + y)
+
         cv2.imshow('ROI', preprocessed_roi)
-    except:
+    except Exception as e:
+        print(e)
         pass
     
+    cv2.imshow('Frame', frame)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 video_capture.release()
