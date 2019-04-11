@@ -29,11 +29,42 @@ while True:
             preprocessed_roi.shape[0],
             preprocessed_roi.shape[1]
         )
-        print(eye_x + x, eye_y + y)
+        
+        # cv2.circle(preprocessed_roi, (int(eye_x[0]), int(eye_y[0])), 5, (0, 255, 0), -1)
+        # cv2.circle(preprocessed_roi, (int(eye_x[1]), int(eye_y[1])), 5, (0, 255, 0), -1)
 
-        cv2.imshow('ROI', preprocessed_roi)
+        left_eye_pos = (
+            x + int((w / 96) * eye_x[0]),
+            y + int((h / 96) * eye_y[0])
+        )
+
+        right_eye_pos = (
+            x + int((w / 96) * eye_x[1]),
+            y + int((h / 96) * eye_y[1])
+        )
+
+        cv2.circle(frame, left_eye_pos, 5, (0, 255, 0), -1)
+        cv2.circle(frame, right_eye_pos, 5, (0, 255, 0), -1)
+
+        cv2.putText(
+            frame,
+            'Left Eye: ' + str(left_eye_pos),
+            (20, 20),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5, (0, 0, 255), 
+            2, cv2.LINE_AA
+        )
+
+        cv2.putText(
+            frame,
+            'Right Eye: ' + str(right_eye_pos),
+            (20, 40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5, (0, 0, 255), 
+            2, cv2.LINE_AA
+        )
+        
     except Exception as e:
-        print(e)
         pass
     
     cv2.imshow('Frame', frame)
