@@ -4,7 +4,7 @@ from utils.Face_Detector import *
 from utils.Preprocessor import *
 from utils.Model_Loader import *
 
-face_detector = Face_Detector('./front_face_cascade.xml')
+haar_face_detector = Haar_Face_Detector('./models/front_face_cascade.xml')
 preprocessor = Preprocessor(96, 96)
 model_loader = Model_Loader('./models/model_2.h5')
 model_loader.load_model()
@@ -17,7 +17,7 @@ video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 while True:
     _, frame = video_capture.read()
     
-    rois = face_detector.detect(frame)
+    rois = haar_face_detector.detect(frame)
     
     try:
         x, y, w, h = rois[0]
